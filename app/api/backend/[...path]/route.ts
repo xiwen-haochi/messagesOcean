@@ -1,17 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-
-/** 仅服务端访问的真实后端地址（可为 HTTP，避免浏览器 Mixed Content）。 */
-const BACKEND_API_URL =
-  process.env.BACKEND_API_URL ?? "http://43.153.221.17:11888";
+import { getServerBackendUrl } from "@/lib/apiBase";
 
 type RouteContext = {
   params: Promise<{ path: string[] }>;
 };
 
 async function proxyRequest(request: NextRequest, context: RouteContext) {
+  const backendBaseUrl = getServerBackendUrl();
   const { path } = await context.params;
   const backendPath = `/${path.join("/")}`;
-  const targetUrl = new URL(backendPath, BACKEND_API_URL);
+  const targetUrl = new URL(backendPath, backendBaseUrl);
   targetUrl.search = request.nextUrl.search;
 
   const headers = new Headers();
