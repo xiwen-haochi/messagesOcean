@@ -1,3 +1,5 @@
+import { getApiBaseUrl, isBrowserRuntime } from "@/lib/apiBase";
+
 export type Message = {
   x: number;
   y: number;
@@ -35,12 +37,22 @@ export type RandomCoordinateResponse = {
   y: number;
 };
 
-const API_BASE_URL = "http://43.153.221.17:11888";
-
 function buildUrl(path: string, params?: Record<string, number | string>) {
-  const url = new URL(path, API_BASE_URL);
+  const base = getApiBaseUrl();
 
-  // 类似 Python 的 dict 遍历：只把明确传入的查询参数拼到 URL 上。
+  if (isBrowserRuntime()) {
+    const search = new URLSearchParams();
+
+    Object.entries(params ?? {}).forEach(([key, value]) => {
+      search.set(key, String(value));
+    });
+
+    const query = search.toString();
+    return `${base}${path}${query ? `?${query}` : ""}`;
+  }
+
+  const url = new URL(path, base);
+
   Object.entries(params ?? {}).forEach(([key, value]) => {
     url.searchParams.set(key, String(value));
   });
