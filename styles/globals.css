@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --ocean-cyan: #3bc7ff;
+  --ocean-bg: #03070d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(circle at 70% 20%, rgba(59, 199, 255, 0.11), transparent 28rem),
+    radial-gradient(circle at 20% 80%, rgba(138, 99, 255, 0.13), transparent 24rem),
+    var(--ocean-bg);
+  color: #f8fafc;
+}
+
+body {
+  overflow: hidden;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(59, 199, 255, 0.35);
+  color: #ffffff;
+}
+
+/* 参考图有轻微扫描线和星尘质感，这里用伪元素统一叠加到整页。 */
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.12) 0 1px, transparent 1.5px);
+  background-size: 100% 4px, 38px 38px;
+  mix-blend-mode: screen;
+  opacity: 0.22;
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  content: "";
+  background: radial-gradient(circle at center, transparent 36%, rgba(0, 0, 0, 0.58) 100%);
+}
